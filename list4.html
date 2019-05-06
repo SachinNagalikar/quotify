@@ -1,0 +1,129 @@
+<html>
+
+<head>
+    <title>Quotify</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1 style="text-align:center">
+        <!-- this is called inline style sheet -->
+        Quotify
+    </h1>
+    <a href="savelocal1.html">Random Quote(API)</a> |
+    <a href="getdata2.html">Random Quote(Local)</a> |
+    <a href="textarea3.html">Add Quote(local)</a> |
+    <a href="list4.html">List All Quotes(local)</a>
+    <div id="quotedisplay">
+
+    </div>
+
+
+    <script>
+        function random() {
+            let localQuotes = localStorage.getItem('localQuotes') ? JSON.parse(localStorage.getItem('localQuotes')) : [];
+
+            let alteredLocalQuotes = [];
+            localQuotes.forEach(function (ele) {
+                alteredLocalQuotes.push(ele);
+            })
+
+            for (let i = 0; i < localQuotes.length; i++) {
+                const div = document.createElement('div')
+                div.setAttribute('id', `div${i}`)
+                const para = document.createElement('p')
+                const para1 = document.createElement('p')
+                const editbutton = document.createElement('BUTTON')
+                editbutton.innerText = 'edit'
+                editbutton.setAttribute('id', `${i}`)
+                const b = document.createElement('BR')
+                const deletebutton = document.createElement('BUTTON')
+                deletebutton.innerText = 'delete'
+                deletebutton.setAttribute('id', `${i}`)
+                para.setAttribute('id', `quote${i}`)
+                para1.setAttribute('id', `author${i}`)
+                const quotedisplay = document.getElementById('quotedisplay')
+
+                para.innerText = ` quote:${localQuotes[i].quote}`
+                para1.innerText = ` ~author:${localQuotes[i].author} `
+
+                div.appendChild(para)
+                para.appendChild(b)
+                para1.appendChild(editbutton)
+                para1.appendChild(deletebutton)
+                div.appendChild(para1)
+                quotedisplay.appendChild(div)
+
+                deletebutton.addEventListener('click', function () {
+                    const deleteid = document.getElementById(`${i}`);
+                    localStorage.getItem('localQuotes')
+                    console.log(deleteid)
+                    console.log(alteredLocalQuotes)
+                    let deleteIndex = alteredLocalQuotes.indexOf(localQuotes[deleteid]);
+                    console.log(deleteIndex)
+                    alteredLocalQuotes.splice(deleteIndex, 1);
+                    quotedisplay.removeChild(div)
+
+
+                    localStorage.removeItem('localQuotes');
+                    localStorage.setItem('localQuotes', JSON.stringify(alteredLocalQuotes));
+                    console.log(localQuotes);
+                });
+
+                editbutton.addEventListener('click', function () {
+                    // editbutton.disabled = true
+                    localStorage.getItem('localQuotes')
+                    let data = JSON.parse(localStorage.getItem('localQuotes'))
+                    //console.log(data)
+                    //const editid = document.getElementById('id')
+                    const updatebutton = document.createElement('button')
+                    updatebutton.setAttribute('id', `${i}`)
+                    //console.log(editid)
+                    updatebutton.innerText = 'update'
+                    let text = document.createElement('textarea')
+                    text.setAttribute('style', 'margin: 0px; width: 829px; height: 59px;')
+                    text.setAttribute('id', `editQuote${i}`)
+                    let textauthor = document.createElement('input')
+                    textauthor.setAttribute('style', 'margin: 0px; width: 829px; height: 20px;')
+                    textauthor.setAttribute('id', `author${i}`)
+
+                    text.value = data[i].quote
+                    textauthor.value = data[i].author
+                    if (editbutton.click) {
+                        para.innerText = ''
+                        para1.innerText = ''
+                    }
+                    para.appendChild(text)
+                    para.appendChild(textauthor)
+                    para.appendChild(updatebutton)
+
+                    updatebutton.addEventListener('click', function () {
+                        let text = document.getElementById(
+                            `editQuote${i}`)
+                        let textauthor = document.getElementById(`author${i}`)
+
+
+                        let editedquote = {
+                            quote: text.value,
+                            author: textauthor.value
+                        }
+                        para.innerText = text.value
+                        para1.innerText = textauthor.value
+                        para1.appendChild(editbutton)
+                        para1.appendChild(deletebutton)
+                        data.splice(i, 1, editedquote)
+                        localStorage.setItem('localQuotes', JSON.stringify(data))
+                    })
+
+                })
+
+            }
+
+        }
+        window.onload = function () {
+            random();
+        }
+    </script>
+</body>
+
+</html>

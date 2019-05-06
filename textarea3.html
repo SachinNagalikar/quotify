@@ -1,0 +1,80 @@
+<html>
+
+<head>
+    <title>Quotify</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+    <h1 style="text-align:center">
+        <!-- this is called inline style sheet -->
+        Quotify
+    </h1>
+    <a href="savelocal1.html">Random Quote(API)</a> |
+    <a href="getdata2.html">Random Quote(Local)</a> |
+    <a href="textarea3.html">Add Quote(local)</a> |
+    <a href="list4.html">List All Quotes(local)</a>
+    <div id="quotedisplay">
+        <!-- <p id="quote" style="text-align: center"></p> -->
+    </div>
+    <center>
+        <label>
+            Quote
+            <textarea id="quote" style="margin: 0px; height: 160px; width: 726px;"></textarea><br />
+        </label>
+        <label>
+            author
+            <textarea id="author"></textarea><br />
+        </label>
+        <input type="button" id="save" value="save" />
+    </center>
+
+    <script>
+        let head = document.getElementById('author')
+        let quote = document.getElementById('quote')
+        let save = document.getElementById('save')
+        let max;
+
+
+        // quote.addEventListener('keyup', function () {
+        //     max = quote.value
+        //     console.log(max)
+        // }, false)
+        // head.addEventListener('keyup', function () {
+        //     store = head.value
+        //     console.log(store)
+        // }, false)
+        // save.addEventListener('click', function () {
+        //     let localQuotes = localStorage.getItem('localQuotes') ? JSON.parse(localStorage.getItem(
+        //         'localQuotes')) : [];
+        //     let textObject = `{ quote:${max}
+        // ~author:${store}}`
+        //     console.log(textObject)
+        //     localQuotes.push(textObject)
+        // }, false)
+
+
+        save.addEventListener('click', function () {
+
+            let localQuotes = localStorage.getItem('localQuotes') ? JSON.parse(localStorage.getItem(
+                'localQuotes')) : [];
+            save.disabled = true
+            let quoteContent = quote.value
+
+            let authorContent = author.value
+
+            let textObject = {
+                author: `${authorContent}`,
+                quote: `${quoteContent}`
+            }
+            console.log(textObject)
+            localQuotes.push(textObject)
+            let sset = JSON.stringify(localQuotes)
+
+            localStorage.setItem('localQuotes', sset)
+            window.location = "list4.html"
+        })
+    </script>
+</body>
+
+</html>
